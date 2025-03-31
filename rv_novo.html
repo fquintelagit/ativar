@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Exportação</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    /* Estilo do Navbar */
+    .navbar-custom {
+      background-color: #20545c !important;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link,
+    .navbar-custom .navbar-text {
+      color: white !important;
+    }
+    .navbar-custom .nav-link:hover {
+      color: #d1e7ea !important;
+    }
+    .navbar-custom .dropdown-menu {
+      background-color: #20545c;
+    }
+    .navbar-custom .dropdown-item {
+      color: white;
+    }
+    .navbar-custom .dropdown-item:hover {
+      background-color: #2c6c75;
+      color: white;
+    }
+
+    /* Ajuste do conteúdo abaixo do navbar */
+    body {
+      padding-top: 70px; /* Espaço para o navbar fixo */
+    }
+    
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    form {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    .section:last-child {
+      border-bottom: none;
+    }
+    textarea {
+      resize: vertical;
+    }
+    /* Estilos para a grid */
+    .grid-container {
+      max-width: 1900px;
+      max-height: 300px;
+      margin: 0 auto 30px auto;
+      overflow-x: auto;
+    }
+    .table-responsive {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+    }
+    .table-hover tbody tr:hover {
+      cursor: pointer;
+      background-color: #f1f1f1;
+    }
+    .selected-row {
+      background-color: #e3f2fd !important;
+    }
+    .fixed-header {
+      position: sticky;
+      top: 0;
+      background-color: #0d6efd;
+      color: white;
+    }
+    .pagination {
+      margin-top: 15px;
+    }
+
+    /* Classes para mostrar/ocultar */
+    .grid-hidden {
+      display: none !important;
+    }
+    .pagination-hidden {
+      display: none !important;
+    }
+    
+    .btn-custom {
+  background-color: #20545c;
+  border-color: #174148;
+  color: white;
+}
+
+.btn-custom:hover {
+  background-color: #2c6c75;
+  border-color: #20545c;
+  color: white;
+}
+  </style>
+  
+</head>
+<body>
+
+   <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-caret-up me-2"></i>ATIVAR
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#"><i class="bi bi-house-door me-1"></i> Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-file-earmark-text me-1"></i> Relatórios</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-gear me-1"></i> Configurações
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#"><i class="bi bi-people me-2"></i>Usuários</a></li>              
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#"><i class="bi bi-sliders me-2"></i>Parâmetros</a></li>
+            </ul>
+          </li>
+        </ul>
+        
+        <div class="d-flex align-items-center">
+          <span class="navbar-text me-3">
+            <i class="bi bi-person-circle me-1"></i> Usuário Admin
+          </span>
+          <button class="btn btn-outline-light btn-sm">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <h1>Registro de Vendas</h1>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button id="toggleGrid" class="btn btn-outline-primary">
+      <i class="bi bi-grid-3x3-gap"></i> Ocultar Grid
+    </button>
+  </div>
+
+  <!-- Grid de registros -->
+  <div class="grid-container">
+    <div class="table-responsive">
+      <table id="registrosTable" class="table table-striped table-hover">
+        <thead class="fixed-header">
+          <tr>
+            <th>Invoice</th>
+            <th>Cliente Importador</th>
+            <th>Modal</th>
+            <th>Padrão Pallet</th>
+            <th>Quantidade Pallets</th>
+            <th>Embalagem</th>
+            <th>Peso liquido</th>
+            <th>Peso bruto</th>
+            <th>Preço</th>
+            <th>Moeda</th>
+            <th>Cotação Câmbio no dia da venda</th>
+            <th>Inconterm</th>
+            <th>Forma de Pagamento</th>
+            <th>Porto Origem ou Aeroporto Origem</th>
+            <th>Porto Destino ou Aeroporto Destino</th>
+            <th>Data Carregamento</th>
+            <th>ETD (Data Estimada de Partida)</th>
+            <th>ETA (Data Estimada de Chegada Destino)</th>
+            <th>Deadline Chegada Porto/Aeroporto</th>
+            <th>Cia de Frete Exportação</th>
+            <th>#Booking</th>
+            <th>Agente de Carga</th>
+            <th>Packing House</th>
+            <th>Valor Produto</th>
+            <th>Valor Serviço</th>
+            <th>Prazo de Pagamento</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Dados serão carregados via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center" id="pagination">
+      <!-- Paginação será gerada via JavaScript -->
+    </ul>
+  </nav>
+
+  <!-- Formulário (mantido exatamente igual) -->
+  <form id="exportForm">
+    <!-- Seção de Informações Básicas -->
+    
+      <div class="row">
+        <div class="col-md-6">
+          <label for="invoice" class="form-label">Invoice:</label>
+          <input type="text" class="form-control" id="invoice" name="invoice" required>
+        </div>
+        <div class="col-md-6">
+          <label for="clienteImportador" class="form-label">Cliente Importador:</label>
+          <input type="text" class="form-control" id="clienteImportador" name="clienteImportador" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+  <label class="form-label">Modal:</label>
+  <div class="btn-group w-100" role="group">
+    <input type="radio" class="btn-check" name="modal" id="modal-aereo" value="Aéreo" autocomplete="off" required>
+    <label class="btn btn-outline-primary" for="modal-aereo">Aéreo</label>
+
+    <input type="radio" class="btn-check" name="modal" id="modal-maritimo" value="Marítimo" autocomplete="off">
+    <label class="btn btn-outline-primary" for="modal-maritimo">Marítimo</label>
+
+    <input type="radio" class="btn-check" name="modal" id="modal-rodoviario" value="Rodoviário" autocomplete="off">
+    <label class="btn btn-outline-primary" for="modal-rodoviario">Rodoviário</label>
+  </div>
+</div>
+        <div class="col-md-6">
+          <label for="padraoPallet" class="form-label">Padrão Pallet:</label>
+          <input type="text" class="form-control" id="padraoPallet" name="padraoPallet" required>
+        </div>
+      </div>
+   
+      <div class="row">
+        <div class="col-md-6">
+          <label for="quantidadePallets" class="form-label">Quantidade Pallets:</label>
+          <input type="number" class="form-control" id="quantidadePallets" name="quantidadePallets" required>
+        </div>
+        <div class="col-md-6">
+          <label for="embalagem" class="form-label">Embalagem:</label>
+          <input type="text" class="form-control" id="embalagem" name="embalagem" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="pesoLiquido" class="form-label">Peso liquido:</label>
+          <input type="number" class="form-control" id="pesoLiquido" name="pesoLiquido" required>
+        </div>
+        <div class="col-md-6">
+          <label for="pesoBruto" class="form-label">Peso bruto:</label>
+          <input type="number" class="form-control" id="pesoBruto" name="pesoBruto" required>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-6">
+          <label for="preco" class="form-label">Preço:</label>
+          <input type="number" class="form-control" id="preco" name="preco" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+          <label for="moeda" class="form-label">Moeda:</label>
+          <input type="text" class="form-control" id="moeda" name="moeda" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="cotacaoCambio" class="form-label">Cotação Câmbio no dia da venda:</label>
+          <input type="number" class="form-control" id="cotacaoCambio" name="cotacaoCambio" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+          <label for="inconterm" class="form-label">Inconterm:</label>
+          <input type="text" class="form-control" id="inconterm" name="inconterm" required>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-6">
+          <label for="formaPagamento" class="form-label">Forma de Pagamento:</label>
+          <input type="text" class="form-control" id="formaPagamento" name="formaPagamento" required>
+        </div>
+        <div class="col-md-6">
+          <label for="portoOrigemAeroportoOrigem" class="form-label">Porto Origem ou Aeroporto Origem:</label>
+          <input type="text" class="form-control" id="portoOrigemAeroportoOrigem" name="portoOrigemAeroportoOrigem" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="portoDestinoAeroportoDestino" class="form-label">Porto Destino ou Aeroporto Destino:</label>
+          <input type="text" class="form-control" id="portoDestinoAeroportoDestino" name="portoDestinoAeroportoDestino" required>
+        </div>
+        <div class="col-md-6">
+          <label for="dataCarregamento" class="form-label">Data Carregamento:</label>
+          <input type="date" class="form-control" id="dataCarregamento" name="dataCarregamento" required>
+        </div>
+      </div>
+   
+      <div class="row">
+        <div class="col-md-6">
+          <label for="etd" class="form-label">ETD (Data Estimada de Partida):</label>
+          <input type="date" class="form-control" id="etd" name="etd" required>
+        </div>
+        <div class="col-md-6">
+          <label for="eta" class="form-label">ETA (Data Estimada de Chegada Destino):</label>
+          <input type="date" class="form-control" id="eta" name="eta" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="deadlineChegada" class="form-label">Deadline Chegada Porto/Aeroporto:</label>
+          <input type="date" class="form-control" id="deadlineChegada" name="deadlineChegada" required>
+        </div>
+        <div class="col-md-6">
+          <label for="ciaFrete" class="form-label">Cia de Frete Exportação:</label>
+          <input type="text" class="form-control" id="ciaFrete" name="ciaFrete" required>
+        </div>
+      </div>
+   
+      <div class="row">
+        <div class="col-md-6">
+          <label for="booking" class="form-label">#Booking:</label>
+          <input type="text" class="form-control" id="booking" name="booking" required>
+        </div>
+        <div class="col-md-6">
+          <label for="agenteCarga" class="form-label">Agente de Carga:</label>
+          <input type="text" class="form-control" id="agenteCarga" name="agenteCarga" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="packingHouse" class="form-label">Packing House:</label>
+          <input type="text" class="form-control" id="packingHouse" name="packingHouse" required>
+        </div>
+        <div class="col-md-6">
+          <label for="valorProduto" class="form-label">Valor Produto:</label>
+          <input type="number" class="form-control" id="valorProduto" name="valorProduto" step="0.01" required>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-6">
+          <label for="valorServico" class="form-label">Valor Serviço:</label>
+          <input type="number" class="form-control" id="valorServico" name="valorServico" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+          <label for="prazoPagamento" class="form-label">Prazo de Pagamento:</label>
+          <input type="text" class="form-control" id="prazoPagamento" name="prazoPagamento" required>
+        </div>
+      </div>
+   
+
+    <!-- Botão de Envio -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-custom w-100">Enviar</button>
+    </div>
+  </form>
+
+  <!-- Bootstrap JS + jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Variáveis para controle
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    let selectedRowId = null;
+    
+    // Dados mockados (substituir por chamada à API do Google Sheets)
+    const mockData = Array.from({ length: 100 }, (_, i) => ({
+      id: i + 1,
+      invoice: `INV-${1000 + i}`,
+      clienteImportador: `Cliente ${i % 10 + 1}`,
+      modal: i % 3 === 0 ? 'Aéreo' : (i % 3 === 1 ? 'Marítimo' : 'Rodoviário'),
+      padraoPallet: `P${i % 4 + 1}`,
+      quantidadePallets: (i % 20) + 1,
+      embalagem: `Tipo ${i % 3 + 1}`,
+      pesoLiquido: (i % 100) + 5,
+      pesoBruto: (i % 100) + 10,
+      preco: (50 + (i % 10)).toFixed(2),
+      moeda: i % 2 === 0 ? 'USD' : 'EUR',
+      cotacaoCambio: (5 + (i % 3 * 0.1)).toFixed(4),
+      inconterm: `INC${i % 4 + 1}`,
+      formaPagamento: i % 2 === 0 ? '30 dias' : 'À vista',
+      portoOrigemAeroportoOrigem: i % 2 === 0 ? 'Santos' : 'GRU',
+      portoDestinoAeroportoDestino: i % 3 === 0 ? 'Miami' : (i % 3 === 1 ? 'Roterdã' : 'Xangai'),
+      dataCarregamento: new Date(Date.now() + i * 86400000).toISOString().split('T')[0],
+      etd: new Date(Date.now() + (i + 3) * 86400000).toISOString().split('T')[0],
+      eta: new Date(Date.now() + (i + 7) * 86400000).toISOString().split('T')[0],
+      deadlineChegada: new Date(Date.now() + (i + 2) * 86400000).toISOString().split('T')[0],
+      ciaFrete: i % 2 === 0 ? 'Maersk' : 'MSC',
+      booking: `BK-${2000 + i}`,
+      agenteCarga: `Agente ${i % 4 + 1}`,
+      packingHouse: `PH-${3000 + i}`,
+      valorProduto: (1000 + (i % 20 * 50)).toFixed(2),
+      valorServico: (500 + (i % 10 * 50)).toFixed(2),
+      prazoPagamento: i % 2 === 0 ? '30 dias' : 'À vista'
+    }));
+
+    // Função para carregar dados (substituir por chamada à API do Google Sheets)
+    function loadData(page = 1) {
+      const startIdx = (page - 1) * rowsPerPage;
+      return {
+        data: mockData.slice(startIdx, startIdx + rowsPerPage),
+        totalRows: mockData.length
+      };
+    }
+
+    // Função para renderizar a tabela
+    function renderTable(page = 1) {
+      const { data, totalRows } = loadData(page);
+      const tableBody = document.getElementById('tableBody');
+      
+      tableBody.innerHTML = '';
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.dataset.id = row.id;
+        tr.innerHTML = `
+          <td>${row.invoice}</td>
+          <td>${row.clienteImportador}</td>
+          <td>${row.modal}</td>
+          <td>${row.padraoPallet}</td>
+          <td>${row.quantidadePallets}</td>
+          <td>${row.embalagem}</td>
+          <td>${row.pesoLiquido}</td>
+          <td>${row.pesoBruto}</td>
+          <td>${row.preco}</td>
+          <td>${row.moeda}</td>
+          <td>${row.cotacaoCambio}</td>
+          <td>${row.inconterm}</td>
+          <td>${row.formaPagamento}</td>
+          <td>${row.portoOrigemAeroportoOrigem}</td>
+          <td>${row.portoDestinoAeroportoDestino}</td>
+          <td>${row.dataCarregamento}</td>
+          <td>${row.etd}</td>
+          <td>${row.eta}</td>
+          <td>${row.deadlineChegada}</td>
+          <td>${row.ciaFrete}</td>
+          <td>${row.booking}</td>
+          <td>${row.agenteCarga}</td>
+          <td>${row.packingHouse}</td>
+          <td>${row.valorProduto}</td>
+          <td>${row.valorServico}</td>
+          <td>${row.prazoPagamento}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Adiciona evento de clique nas linhas
+      document.querySelectorAll('#tableBody tr').forEach(tr => {
+        tr.addEventListener('click', () => fillForm(tr.dataset.id));
+      });
+
+      renderPagination(totalRows, page);
+    }
+
+    // Função para preencher o formulário ao clicar em uma linha
+    function fillForm(rowId) {
+      const rowData = mockData.find(item => item.id == rowId);
+      if (!rowData) return;
+
+      selectedRowId = rowId;
+      
+      // Destaca a linha selecionada
+      document.querySelectorAll('#tableBody tr').forEach(tr => {
+        tr.classList.toggle('selected-row', tr.dataset.id == rowId);
+      });
+
+      // Preenche o formulário
+      document.getElementById('invoice').value = rowData.invoice;
+      document.getElementById('clienteImportador').value = rowData.clienteImportador;
+      //document.getElementById('modal').value = rowData.modal;
+      document.querySelector(`input[name="modal"][value="${rowData.modal}"]`).checked = true;
+      document.getElementById('padraoPallet').value = rowData.padraoPallet;
+      document.getElementById('quantidadePallets').value = rowData.quantidadePallets;
+      document.getElementById('embalagem').value = rowData.embalagem;
+      document.getElementById('pesoLiquido').value = rowData.pesoLiquido;
+      document.getElementById('pesoBruto').value = rowData.pesoBruto;
+      document.getElementById('preco').value = rowData.preco;
+      document.getElementById('moeda').value = rowData.moeda;
+      document.getElementById('cotacaoCambio').value = rowData.cotacaoCambio;
+      document.getElementById('inconterm').value = rowData.inconterm;
+      document.getElementById('formaPagamento').value = rowData.formaPagamento;
+      document.getElementById('portoOrigemAeroportoOrigem').value = rowData.portoOrigemAeroportoOrigem;
+      document.getElementById('portoDestinoAeroportoDestino').value = rowData.portoDestinoAeroportoDestino;
+      document.getElementById('dataCarregamento').value = rowData.dataCarregamento;
+      document.getElementById('etd').value = rowData.etd;
+      document.getElementById('eta').value = rowData.eta;
+      document.getElementById('deadlineChegada').value = rowData.deadlineChegada;
+      document.getElementById('ciaFrete').value = rowData.ciaFrete;
+      document.getElementById('booking').value = rowData.booking;
+      document.getElementById('agenteCarga').value = rowData.agenteCarga;
+      document.getElementById('packingHouse').value = rowData.packingHouse;
+      document.getElementById('valorProduto').value = rowData.valorProduto;
+      document.getElementById('valorServico').value = rowData.valorServico;
+      document.getElementById('prazoPagamento').value = rowData.prazoPagamento;
+    }
+
+    // Função para renderizar a paginação
+    function renderPagination(totalRows, currentPage) {
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      const pagination = document.getElementById('pagination');
+      
+      pagination.innerHTML = '';
+      
+      // Botão Anterior
+      pagination.innerHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Anterior</a>
+        </li>
+      `;
+
+      // Números das páginas
+      for (let i = 1; i <= totalPages; i++) {
+        pagination.innerHTML += `
+          <li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+          </li>
+        `;
+      }
+
+      // Botão Próximo
+      pagination.innerHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Próximo</a>
+        </li>
+      `;
+    }
+
+    // Função para mudar de página
+    function changePage(newPage) {
+      currentPage = newPage;
+      renderTable(currentPage);
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTable();
+      
+      // Evento de submit do formulário
+      document.getElementById('exportForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert(selectedRowId ? 'Registro atualizado!' : 'Novo registro adicionado!');
+        window.open('invoice.html', '_blank');
+      });
+
+      // Controle do toggle da grid
+      const toggleGridBtn = document.getElementById('toggleGrid');
+      const gridContainer = document.querySelector('.grid-container');
+      const pagination = document.querySelector('.pagination');
+      
+      // Estado inicial (visível)
+      let gridVisible = true;
+      
+      toggleGridBtn.addEventListener('click', () => {
+        gridVisible = !gridVisible;
+        
+        if (gridVisible) {
+          gridContainer.classList.remove('grid-hidden');
+          pagination.classList.remove('pagination-hidden');
+          toggleGridBtn.innerHTML = '<i class="bi bi-grid-3x3-gap"></i> Ocultar Grid';
+        } else {
+          gridContainer.classList.add('grid-hidden');
+          pagination.classList.add('pagination-hidden');
+          toggleGridBtn.innerHTML = '<i class="bi bi-grid-3x3-gap"></i> Mostrar Grid';
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>

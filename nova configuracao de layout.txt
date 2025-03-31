@@ -1,0 +1,52 @@
+invoice
+
+Cliente Importador
+
+Modal (aéreo, marítimo, rod) (novo campo)
+
+padrão pallet (novo campo)
+
+Qtd Caixas (Qtd Pallets)
+
+embalagem
+
+Peso liquido
+
+Peso bruto
+
+Preco
+
+Moeda
+
+Cotação Câmbio no dia da venda
+
+Inconterm
+
+Payment Terms Cliente (Forma de Pagamento)
+
+Porto Origem ou Aeroporto Origem
+
+Porto Destino ou Aeroporto Destino
+
+Data Carregamento
+
+ETD (Data Estimada de Partida)
+
+ETA (Data Estimada de Chegada Destino)
+
+Deadline Chegada Porto/Aeroporto
+
+Cia de Frete Exportação
+
+#Booking
+
+Agente de Carga
+
+Packing (Packing House)
+
+Valor Produto
+
+Valor Serviço
+
+Prazo de Pagamento
+

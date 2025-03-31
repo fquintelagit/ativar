@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema - Login/Cadastro</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .auth-container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .auth-header img {
+            --width: 80px;
+            margin-bottom: 15px;
+        }
+        .form-floating label {
+            padding: 0.8rem 0.75rem;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #cadastroForm, #recuperarSenhaForm {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="auth-container">
+            <!-- Cabeçalho -->
+            <div class="auth-header">
+                <img src="logo-ativar.png" alt="Logo" class="img-fluid">
+                <h2 id="formTitle">Login</h2>
+                <p id="formSubtitle">Entre com suas credenciais para acessar o sistema</p>
+            </div>
+
+            <!-- Formulário de Login (padrão) -->
+            <form id="loginForm">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="loginEmail" placeholder="nome@exemplo.com" required>
+                    <label for="loginEmail">E-mail</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="loginPassword" placeholder="Senha" required>
+                    <label for="loginPassword">Senha</label>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Lembrar-me</label>
+                    </div>
+                    <a href="#" id="esqueciSenhaLink">Esqueci minha senha</a>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Entrar</button>
+                
+                <div class="auth-footer">
+                    <p>Não tem uma conta? <a href="#" id="cadastrarLink">Cadastre-se</a></p>
+                </div>
+            </form>
+
+            <!-- Formulário de Cadastro -->
+            <form id="cadastroForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="cadastroNome" placeholder="Nome" required>
+                            <label for="cadastroNome">Nome</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="cadastroSobrenome" placeholder="Sobrenome" required>
+                            <label for="cadastroSobrenome">Sobrenome</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="cadastroEmail" placeholder="nome@exemplo.com" required>
+                    <label for="cadastroEmail">E-mail</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="cadastroSenha" placeholder="Senha" required>
+                    <label for="cadastroSenha">Senha</label>
+                    <div class="form-text">Mínimo de 8 caracteres</div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="cadastroConfirmaSenha" placeholder="Confirmar Senha" required>
+                    <label for="cadastroConfirmaSenha">Confirmar Senha</label>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="aceitarTermos" required>
+                    <label class="form-check-label" for="aceitarTermos">
+                        Eu concordo com os <a href="#">Termos de Serviço</a> e <a href="#">Política de Privacidade</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Cadastrar</button>
+                
+                <div class="auth-footer">
+                    <p>Já tem uma conta? <a href="#" id="loginLink">Faça login</a></p>
+                </div>
+            </form>
+
+            <!-- Formulário de Recuperação de Senha -->
+            <form id="recuperarSenhaForm">
+                <div class="mb-4">
+                    <p>Digite seu e-mail cadastrado e enviaremos um link para redefinir sua senha.</p>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="recuperarEmail" placeholder="nome@exemplo.com" required>
+                    <label for="recuperarEmail">E-mail</label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 mb-3">Enviar Link</button>
+                
+                <div class="auth-footer">
+                    <p>Lembrou sua senha? <a href="#" id="voltarLoginLink">Voltar para login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para alternar entre os formulários -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos
+            const loginForm = document.getElementById('loginForm');
+            const cadastroForm = document.getElementById('cadastroForm');
+            const recuperarSenhaForm = document.getElementById('recuperarSenhaForm');
+            const formTitle = document.getElementById('formTitle');
+            const formSubtitle = document.getElementById('formSubtitle');
+            
+            // Links
+            const cadastrarLink = document.getElementById('cadastrarLink');
+            const loginLink = document.getElementById('loginLink');
+            const esqueciSenhaLink = document.getElementById('esqueciSenhaLink');
+            const voltarLoginLink = document.getElementById('voltarLoginLink');
+            
+            // Mostrar formulário de cadastro
+            cadastrarLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                cadastroForm.style.display = 'block';
+                recuperarSenhaForm.style.display = 'none';
+                formTitle.textContent = 'Cadastre-se';
+                formSubtitle.textContent = 'Crie sua conta para começar a usar o sistema';
+            });
+            
+            // Mostrar formulário de login
+            loginLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'block';
+                cadastroForm.style.display = 'none';
+                recuperarSenhaForm.style.display = 'none';
+                formTitle.textContent = 'Login';
+                formSubtitle.textContent = 'Entre com suas credenciais para acessar o sistema';
+            });
+            
+            // Mostrar formulário de recuperação de senha
+            esqueciSenhaLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                cadastroForm.style.display = 'none';
+                recuperarSenhaForm.style.display = 'block';
+                formTitle.textContent = 'Recuperar Senha';
+                formSubtitle.textContent = '';
+            });
+            
+            // Voltar para login do formulário de recuperação
+            voltarLoginLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'block';
+                cadastroForm.style.display = 'none';
+                recuperarSenhaForm.style.display = 'none';
+                formTitle.textContent = 'Login';
+                formSubtitle.textContent = 'Entre com suas credenciais para acessar o sistema';
+            });
+            
+            // Simular envio dos formulários (apenas para protótipo)
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Formulário enviado! (simulação para protótipo)');
+                    
+                    // Após "enviar" o cadastro, voltar para login
+                    if (form.id === 'cadastroForm' || form.id === 'recuperarSenhaForm') {
+                        loginForm.style.display = 'block';
+                        cadastroForm.style.display = 'none';
+                        recuperarSenhaForm.style.display = 'none';
+                        formTitle.textContent = 'Login';
+                        formSubtitle.textContent = 'Entre com suas credenciais para acessar o sistema';
+                    }
+                    else {
+                        window.location.href = 'rv_novo.html'
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

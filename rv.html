@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário de Exportação</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <style>
+    body {
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    form {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    .section:last-child {
+      border-bottom: none;
+    }
+    textarea {
+      resize: vertical;
+    }
+    /* Estilos para a grid */
+    .grid-container {
+      max-width: 1900px;
+      max-height: 300px;
+      margin: 0 auto 30px auto;
+      overflow-x: auto;
+    }
+    .table-responsive {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: white;
+    }
+    .table-hover tbody tr:hover {
+      cursor: pointer;
+      background-color: #f1f1f1;
+    }
+    .selected-row {
+      background-color: #e3f2fd !important;
+    }
+    .fixed-header {
+      position: sticky;
+      top: 0;
+      background-color: #0d6efd;
+      color: white;
+    }
+    .pagination {
+      margin-top: 15px;
+    }
+
+    /* Classes para mostrar/ocultar */
+    .grid-hidden {
+      display: none !important;
+    }
+    .pagination-hidden {
+      display: none !important;
+    }
+  </style>
+  
+</head>
+<body>
+  <h1>Registro de Vendas</h1>
+
+  <div class="d-flex justify-content-end mb-3">
+    <button id="toggleGrid" class="btn btn-outline-primary">
+      <i class="bi bi-grid-3x3-gap"></i> Ocultar Grid
+    </button>
+  </div>
+
+  <!-- Grid de registros -->
+  <div class="grid-container">
+    <div class="table-responsive">
+      <table id="registrosTable" class="table table-striped table-hover">
+        <thead class="fixed-header">
+          <tr>
+            <th>Invoice</th>
+            <th>Nota Fiscal</th>
+            <th>Produto</th>
+            <th>Cliente Importador</th>
+            <th>Qtd Caixas</th>
+            <th>Qtd KG</th>
+            <th>Packing</th>
+            <th>Agente de Carga</th>
+            <th>Data Carregamento</th>
+            <th>ETD</th>
+            <th>Deadline Chegada</th>
+            <th>ETA</th>
+            <th>Valor Packing</th>
+            <th>Embalagem</th>
+            <th>QTD Caixas/Carga</th>
+            <th>Inconterm</th>
+            <th>Preço Venda</th>
+            <th>Cotação Câmbio</th>
+            <th>Payment Terms</th>
+            <th>Moeda Venda</th>
+            <th>Porto Origem</th>
+            <th>Aeroporto/Porto</th>
+            <th>Destino</th>
+            <th>Cia Frete</th>
+            <th>Valor Frete</th>
+            <th>Qualidade Chegada</th>
+            <th>Documentos</th>
+            <th>Observações</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- Dados serão carregados via JavaScript -->
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+
+  <nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center" id="pagination">
+      <!-- Paginação será gerada via JavaScript -->
+    </ul>
+  </nav>
+
+  <!-- Formulário (mantido exatamente igual) -->
+  <form id="exportForm">
+    <!-- Seção de Informações Básicas -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="invoice" class="form-label">Invoice:</label>
+          <input type="text" class="form-control" id="invoice" name="invoice" required>
+        </div>
+        <div class="col-md-6">
+          <label for="notaFiscal" class="form-label">Nota Fiscal:</label>
+          <input type="text" class="form-control" id="notaFiscal" name="notaFiscal" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="produto" class="form-label">Produto:</label>
+          <input type="text" class="form-control" id="produto" name="produto" required>
+        </div>
+        <div class="col-md-6">
+          <label for="clienteImportador" class="form-label">Cliente Importador:</label>
+          <input type="text" class="form-control" id="clienteImportador" name="clienteImportador" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Quantidades -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="qtdCaixas" class="form-label">Qtd Caixas:</label>
+          <input type="number" class="form-control" id="qtdCaixas" name="qtdCaixas" required>
+        </div>
+        <div class="col-md-6">
+          <label for="qtdKG" class="form-label">Qtd KG:</label>
+          <input type="number" class="form-control" id="qtdKG" name="qtdKG" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="packing" class="form-label">Packing:</label>
+          <input type="text" class="form-control" id="packing" name="packing" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Agente e Datas -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="agenteCarga" class="form-label">Agente de Carga:</label>
+          <input type="text" class="form-control" id="agenteCarga" name="agenteCarga" required>
+        </div>
+        <div class="col-md-6">
+          <label for="dataCarregamento" class="form-label">Data Carregamento:</label>
+          <input type="date" class="form-control" id="dataCarregamento" name="dataCarregamento" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="etd" class="form-label">ETD (Data Estimada de Partida):</label>
+          <input type="date" class="form-control" id="etd" name="etd" required>
+        </div>
+        <div class="col-md-6">
+          <label for="eta" class="form-label">ETA (Data Estimada de Chegada Destino):</label>
+          <input type="date" class="form-control" id="eta" name="eta" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="deadlineChegada" class="form-label">Deadline Chegada Porto/Aeroporto:</label>
+          <input type="date" class="form-control" id="deadlineChegada" name="deadlineChegada" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Valores e Negociação -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="valorNegociado" class="form-label">Valor negociado com Packing (Gengibre/Serviço):</label>
+          <input type="number" class="form-control" id="valorNegociado" name="valorNegociado" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+          <label for="embalagem" class="form-label">Embalagem:</label>
+          <input type="text" class="form-control" id="embalagem" name="embalagem" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="qtdCaixasConfig" class="form-label">QTD Caixas / Configuração do Carregamento:</label>
+          <input type="text" class="form-control" id="qtdCaixasConfig" name="qtdCaixasConfig" required>
+        </div>
+        <div class="col-md-6">
+          <label for="inconterm" class="form-label">Inconterm:</label>
+          <input type="text" class="form-control" id="inconterm" name="inconterm" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Preços e Pagamento -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="precoVenda" class="form-label">Preço de Venda (por caixa):</label>
+          <input type="number" class="form-control" id="precoVenda" name="precoVenda" step="0.01" required>
+        </div>
+        <div class="col-md-6">
+          <label for="cotacaoCambio" class="form-label">Cotação Câmbio no dia da venda:</label>
+          <input type="number" class="form-control" id="cotacaoCambio" name="cotacaoCambio" step="0.01" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="paymentTerms" class="form-label">Payment Terms Cliente (Forma de Pagamento):</label>
+          <input type="text" class="form-control" id="paymentTerms" name="paymentTerms" required>
+        </div>
+        <div class="col-md-6">
+          <label for="moedaVenda" class="form-label">Moeda de Venda:</label>
+          <input type="text" class="form-control" id="moedaVenda" name="moedaVenda" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Origem e Destino -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="portoOrigem" class="form-label">Porto Origem (Marítimo):</label>
+          <input type="text" class="form-control" id="portoOrigem" name="portoOrigem" required>
+        </div>
+        <div class="col-md-6">
+          <label for="aeroportoPortoOrigem" class="form-label">Aeroporto / Porto Origem:</label>
+          <input type="text" class="form-control" id="aeroportoPortoOrigem" name="aeroportoPortoOrigem" required>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <label for="destino" class="form-label">Destino:</label>
+          <input type="text" class="form-control" id="destino" name="destino" required>
+        </div>
+        <div class="col-md-6">
+          <label for="ciaFrete" class="form-label">Cia de Frete Exportação:</label>
+          <input type="text" class="form-control" id="ciaFrete" name="ciaFrete" required>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Documentos -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="documentosExportador" class="form-label">Documentos ao Exportador:</label>
+          <textarea class="form-control" id="documentosExportador" name="documentosExportador" rows="4"></textarea>
+        </div>
+        <div class="col-md-6">
+          <label for="observacoes" class="form-label">Observações Gerais:</label>
+          <textarea class="form-control" id="observacoes" name="observacoes" rows="4"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Frete e Qualidade -->
+    <div class="section">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="valorFrete" class="form-label">Valor do Frete (se aplicável):</label>
+          <input type="number" class="form-control" id="valorFrete" name="valorFrete" step="0.01">
+        </div>
+        <div class="col-md-6">
+          <label for="qualidadeChegada" class="form-label">Qualidade Chegada:</label>
+          <input type="text" class="form-control" id="qualidadeChegada" name="qualidadeChegada">
+        </div>
+      </div>
+    </div>
+
+    <!-- Botão de Envio -->
+    <div class="mt-4">
+      <button type="submit" class="btn btn-success w-100">Enviar</button>
+    </div>
+  </form>
+
+  <!-- Bootstrap JS + jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Variáveis para controle
+    let currentPage = 1;
+    const rowsPerPage = 10;
+    let selectedRowId = null;
+    
+    // Dados mockados (substituir por chamada à API do Google Sheets)
+    const mockData = Array.from({ length: 100 }, (_, i) => ({
+      id: i + 1,
+      invoice: `INV-${1000 + i}`,
+      notaFiscal: `NF-${2000 + i}`,
+      produto: `Produto ${i % 5 + 1}`,
+      clienteImportador: `Cliente ${i % 10 + 1}`,
+      qtdCaixas: (i % 20) + 1,
+      qtdKG: (i % 100) + 5,
+      packing: `Packing ${i % 3 + 1}`,
+      agenteCarga: `Agente ${i % 4 + 1}`,
+      dataCarregamento: new Date(Date.now() + i * 86400000).toISOString().split('T')[0],
+      etd: new Date(Date.now() + (i + 3) * 86400000).toISOString().split('T')[0],
+      deadlineChegada: new Date(Date.now() + (i + 2) * 86400000).toISOString().split('T')[0],
+      eta: new Date(Date.now() + (i + 7) * 86400000).toISOString().split('T')[0],
+      valorNegociado: (1000 + (i % 20 * 50)).toFixed(2),
+      embalagem: `Tipo ${i % 3 + 1}`,
+      qtdCaixasConfig: `${(i % 5) + 1}x${(i % 8) + 1}`,
+      inconterm: `INC${i % 4 + 1}`,
+      precoVenda: (50 + (i % 10)).toFixed(2),
+      cotacaoCambio: (5 + (i % 3 * 0.1)).toFixed(4),
+      paymentTerms: i % 2 === 0 ? '30 dias' : 'À vista',
+      moedaVenda: i % 2 === 0 ? 'USD' : 'EUR',
+      portoOrigem: i % 2 === 0 ? 'Santos' : 'Rio de Janeiro',
+      aeroportoPortoOrigem: i % 2 === 0 ? 'GRU' : 'GIG',
+      destino: i % 3 === 0 ? 'Miami' : (i % 3 === 1 ? 'Roterdã' : 'Xangai'),
+      ciaFrete: i % 2 === 0 ? 'Maersk' : 'MSC',
+      valorFrete: (500 + (i % 10 * 50)).toFixed(2),
+      qualidadeChegada: i % 4 === 0 ? 'Excelente' : 'Boa',
+      documentosExportador: i % 2 === 0 ? 'BL, Invoice, Packing List' : 'AWB, Invoice',
+      observacoes: i % 3 === 0 ? 'Produto perecível' : (i % 3 === 1 ? 'Frágil' : '')
+    }));
+
+    // Função para carregar dados (substituir por chamada à API do Google Sheets)
+    function loadData(page = 1) {
+      const startIdx = (page - 1) * rowsPerPage;
+      return {
+        data: mockData.slice(startIdx, startIdx + rowsPerPage),
+        totalRows: mockData.length
+      };
+    }
+
+    // Função para renderizar a tabela
+    function renderTable(page = 1) {
+      const { data, totalRows } = loadData(page);
+      const tableBody = document.getElementById('tableBody');
+      
+      tableBody.innerHTML = '';
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.dataset.id = row.id;
+        tr.innerHTML = `
+          <td>${row.invoice}</td>
+          <td>${row.notaFiscal}</td>
+          <td>${row.produto}</td>
+          <td>${row.clienteImportador}</td>
+          <td>${row.qtdCaixas}</td>
+          <td>${row.qtdKG}</td>
+          <td>${row.packing}</td>
+          <td>${row.agenteCarga}</td>
+          <td>${row.dataCarregamento}</td>
+          <td>${row.etd}</td>
+          <td>${row.deadlineChegada}</td>
+          <td>${row.eta}</td>
+          <td>${row.valorNegociado}</td>
+          <td>${row.embalagem}</td>
+          <td>${row.qtdCaixasConfig}</td>
+          <td>${row.inconterm}</td>
+          <td>${row.precoVenda}</td>
+          <td>${row.cotacaoCambio}</td>
+          <td>${row.paymentTerms}</td>
+          <td>${row.moedaVenda}</td>
+          <td>${row.portoOrigem}</td>
+          <td>${row.aeroportoPortoOrigem}</td>
+          <td>${row.destino}</td>
+          <td>${row.ciaFrete}</td>
+          <td>${row.valorFrete}</td>
+          <td>${row.qualidadeChegada}</td>
+          <td>${row.documentosExportador}</td>
+          <td>${row.observacoes || '-'}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Adiciona evento de clique nas linhas
+      document.querySelectorAll('#tableBody tr').forEach(tr => {
+        tr.addEventListener('click', () => fillForm(tr.dataset.id));
+      });
+
+      renderPagination(totalRows, page);
+    }
+
+    // Função para preencher o formulário ao clicar em uma linha
+    function fillForm(rowId) {
+      const rowData = mockData.find(item => item.id == rowId);
+      if (!rowData) return;
+
+      selectedRowId = rowId;
+      
+      // Destaca a linha selecionada
+      document.querySelectorAll('#tableBody tr').forEach(tr => {
+        tr.classList.toggle('selected-row', tr.dataset.id == rowId);
+      });
+
+      // Preenche o formulário
+      document.getElementById('invoice').value = rowData.invoice;
+      document.getElementById('notaFiscal').value = rowData.notaFiscal;
+      document.getElementById('produto').value = rowData.produto;
+      document.getElementById('clienteImportador').value = rowData.clienteImportador;
+      document.getElementById('qtdCaixas').value = rowData.qtdCaixas;
+      document.getElementById('qtdKG').value = rowData.qtdKG;
+      document.getElementById('packing').value = rowData.packing;
+      document.getElementById('agenteCarga').value = rowData.agenteCarga;
+      document.getElementById('dataCarregamento').value = rowData.dataCarregamento;
+      document.getElementById('etd').value = rowData.etd;
+      document.getElementById('deadlineChegada').value = rowData.deadlineChegada;
+      document.getElementById('eta').value = rowData.eta;
+      document.getElementById('valorNegociado').value = rowData.valorNegociado;
+      document.getElementById('embalagem').value = rowData.embalagem;
+      document.getElementById('qtdCaixasConfig').value = rowData.qtdCaixasConfig;
+      document.getElementById('inconterm').value = rowData.inconterm;
+      document.getElementById('precoVenda').value = rowData.precoVenda;
+      document.getElementById('cotacaoCambio').value = rowData.cotacaoCambio;
+      document.getElementById('paymentTerms').value = rowData.paymentTerms;
+      document.getElementById('moedaVenda').value = rowData.moedaVenda;
+      document.getElementById('portoOrigem').value = rowData.portoOrigem;
+      document.getElementById('aeroportoPortoOrigem').value = rowData.aeroportoPortoOrigem;
+      document.getElementById('destino').value = rowData.destino;
+      document.getElementById('ciaFrete').value = rowData.ciaFrete;
+      document.getElementById('valorFrete').value = rowData.valorFrete;
+      document.getElementById('qualidadeChegada').value = rowData.qualidadeChegada;
+      document.getElementById('documentosExportador').value = rowData.documentosExportador;
+      document.getElementById('observacoes').value = rowData.observacoes || '';
+    }
+
+    // Função para renderizar a paginação
+    function renderPagination(totalRows, currentPage) {
+      const totalPages = Math.ceil(totalRows / rowsPerPage);
+      const pagination = document.getElementById('pagination');
+      
+      pagination.innerHTML = '';
+      
+      // Botão Anterior
+      pagination.innerHTML += `
+        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">Anterior</a>
+        </li>
+      `;
+
+      // Números das páginas
+      for (let i = 1; i <= totalPages; i++) {
+        pagination.innerHTML += `
+          <li class="page-item ${i === currentPage ? 'active' : ''}">
+            <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+          </li>
+        `;
+      }
+
+      // Botão Próximo
+      pagination.innerHTML += `
+        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+          <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">Próximo</a>
+        </li>
+      `;
+    }
+
+    // Função para mudar de página
+    function changePage(newPage) {
+      currentPage = newPage;
+      renderTable(currentPage);
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTable();
+      
+      // Evento de submit do formulário
+      document.getElementById('exportForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert(selectedRowId ? 'Registro atualizado!' : 'Novo registro adicionado!');
+        window.open('invoice.html', '_blank');
+      });
+
+      // Controle do toggle da grid
+      const toggleGridBtn = document.getElementById('toggleGrid');
+      const gridContainer = document.querySelector('.grid-container');
+      const pagination = document.querySelector('.pagination');
+      
+      // Estado inicial (visível)
+      let gridVisible = true;
+      
+      toggleGridBtn.addEventListener('click', () => {
+        gridVisible = !gridVisible;
+        
+        if (gridVisible) {
+          gridContainer.classList.remove('grid-hidden');
+          pagination.classList.remove('pagination-hidden');
+          toggleGridBtn.innerHTML = '<i class="bi bi-grid-3x3-gap"></i> Ocultar Grid';
+        } else {
+          gridContainer.classList.add('grid-hidden');
+          pagination.classList.add('pagination-hidden');
+          toggleGridBtn.innerHTML = '<i class="bi bi-grid-3x3-gap"></i> Mostrar Grid';
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>
